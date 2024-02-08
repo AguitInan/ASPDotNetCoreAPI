@@ -20,5 +20,15 @@ namespace Exercice04.Repositories
             _dbContext.SaveChanges();
             return addedObj.Entity.Id > 0;
         }
+
+        // READ
+        public Contact? GetById(int id)
+        {
+            return _dbContext.Contacts.Find(id);
+        }
+        public Contact? Get(Expression<Func<Contact, bool>> predicate)
+        {
+            return _dbContext.Contacts.FirstOrDefault(predicate);
+        }
     }
 }
