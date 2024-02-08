@@ -74,5 +74,18 @@ namespace Exercice04.Controllers
             if (contacts == null || !contacts.Any()) return NotFound();
             return Ok(contacts);
         }
+
+        // PUT: api/contacts/{id}
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, Contact contact)
+        {
+            if (id != contact.Id) return BadRequest();
+
+            var existingContact = _contactRepository.GetById(id);
+            if (existingContact == null) return NotFound();
+
+            _contactRepository.Update(contact);
+            return NoContent();
+        }
     }
 }
