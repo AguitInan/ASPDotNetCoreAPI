@@ -64,5 +64,15 @@ namespace Exercice04.Repositories
 
             return _dbContext.SaveChanges() > 0;
         }
+
+        // DELETE
+        public bool Delete(int id)
+        {
+            var contact = GetById(id);
+            if (contact == null)
+                return false;
+            _dbContext.Contacts.Remove(contact);
+            return _dbContext.SaveChanges() > 0;
+        }
     }
 }
