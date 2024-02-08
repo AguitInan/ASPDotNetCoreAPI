@@ -30,5 +30,13 @@ namespace Exercice04.Repositories
         {
             return _dbContext.Contacts.FirstOrDefault(predicate);
         }
+        public List<Contact> GetAll()
+        {
+            return _dbContext.Contacts.ToList();
+        }
+        public List<Contact> GetAll(Expression<Func<Contact, bool>> predicate)
+        {
+            return _dbContext.Contacts.Where(predicate).ToList();
+        }
     }
 }
