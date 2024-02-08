@@ -15,5 +15,13 @@ namespace Exercice04.Controllers
         {
             _contactRepository = contactRepository;
         }
+
+        // GET: api/contacts
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var contacts = _contactRepository.GetAll();
+            return Ok(contacts);
+        }
     }
 }
