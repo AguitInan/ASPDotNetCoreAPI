@@ -23,5 +23,24 @@ namespace Exercice04.Controllers
             var contacts = _contactRepository.GetAll();
             return Ok(contacts);
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            //var contact = _fakeDb.Contacts.FirstOrDefault(c => c.Id == id);
+            var contact = _contactRepository.GetById(id);
+
+            if (contact == null)
+                return NotFound(new
+                {
+                    Message = "Contact non trouvée !"
+                });
+
+            return Ok(new
+            {
+                Message = "Contact trouvée !",
+                Contact = contact
+            });
+        }
     }
 }
