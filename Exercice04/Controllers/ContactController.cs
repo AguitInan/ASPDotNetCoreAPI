@@ -56,5 +56,23 @@ namespace Exercice04.Controllers
 
             // dans le cas ou l'ajout aura échoué, il convient de retourner un BadRequest() => 400
         }
+
+        //// GET: api/contacts/search?firstName=[firstName]
+        //[HttpGet("search")]
+        //public IActionResult SearchByFirstName(string firstName)
+        //{
+        //    var contact = _contactRepository.Get(c => c.FirstName.StartsWith(firstName));
+        //    if (contact == null) return NotFound();
+        //    return Ok(contact);
+        //}
+
+        // GET: api/contacts/search?firstName=[firstName]
+        [HttpGet("search")]
+        public IActionResult SearchByFirstName(string firstName)
+        {
+            var contacts = _contactRepository.GetAll(c => c.FirstName.StartsWith(firstName));
+            if (contacts == null || !contacts.Any()) return NotFound();
+            return Ok(contacts);
+        }
     }
 }
