@@ -42,5 +42,19 @@ namespace Exercice04.Controllers
                 Contact = contact
             });
         }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] Contact contact)
+        //public IActionResult Post([FromForm]Crepe crepe) // si formulaire
+        {
+            //_fakeDb.Crepes.Add(crepe);
+            _contactRepository.Add(contact);
+
+            //return Ok("Crepe ajoutée");
+            return CreatedAtAction(nameof(GetById), new { id = contact.Id }, "Contact ajoutée"); // meilleure version à utiliser de préférence
+            //return Created($"api/Crepe/{crepe.Id}", "Crepe ajoutée");
+
+            // dans le cas ou l'ajout aura échoué, il convient de retourner un BadRequest() => 400
+        }
     }
 }
