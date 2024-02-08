@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
 namespace Exercice04.Models
@@ -16,6 +17,12 @@ namespace Exercice04.Models
         [Column("lastname")]
         [Display(Name = "Nom du contact")]
         public string LastName { get; set; }
+        [NotMapped]
+        [Display(Name = "Nom complet du contact")]
+        public string FullName
+        {
+            get { return $"{FirstName} {LastName}"; }
+        }
 
         [Column("password")]
         [Display(Name = "Mot de passe")]
@@ -33,5 +40,21 @@ namespace Exercice04.Models
         [Display(Name = "Email du contact")]
         public string Email { get; set; }
 
+        [Column("birthdate")]
+        [Display(Name = "Date de naissance")]
+        public DateTime BirthDate { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Âge du contact")]
+        public int Age
+        {
+            get
+            {
+                DateTime now = DateTime.Today;
+                int age = now.Year - BirthDate.Year;
+                if (BirthDate.Date > now.AddYears(-age)) age--;
+                return age;
+            }
+        }
     }
 }
