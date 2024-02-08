@@ -87,5 +87,16 @@ namespace Exercice04.Controllers
             _contactRepository.Update(contact);
             return NoContent();
         }
+
+        // DELETE: api/contacts/{id}
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var contact = _contactRepository.GetById(id);
+            if (contact == null) return NotFound();
+
+            _contactRepository.Delete(id);
+            return NoContent();
+        }
     }
 }
