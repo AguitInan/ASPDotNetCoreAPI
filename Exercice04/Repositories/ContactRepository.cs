@@ -12,5 +12,13 @@ namespace Exercice04.Repositories
         {
             _dbContext = context;
         }
+
+        // CREATE
+        public bool Add(Contact contact)
+        {
+            var addedObj = _dbContext.Contacts.Add(contact);
+            _dbContext.SaveChanges();
+            return addedObj.Entity.Id > 0;
+        }
     }
 }
