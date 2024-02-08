@@ -38,5 +38,31 @@ namespace Exercice04.Repositories
         {
             return _dbContext.Contacts.Where(predicate).ToList();
         }
+
+        // UPDATE
+        public bool Update(Contact contact)
+        {
+            var contactFromDb = GetById(contact.Id);
+
+            if (contactFromDb == null)
+                return false;
+
+            if (contactFromDb.FirstName != contact.FirstName)
+                contactFromDb.FirstName = contact.FirstName;
+            if (contactFromDb.LastName != contact.LastName)
+                contactFromDb.LastName = contact.LastName;
+            if (contactFromDb.Password != contact.Password)
+                contactFromDb.Password = contact.Password;
+            if (contactFromDb.AvatarURL != contact.AvatarURL)
+                contactFromDb.AvatarURL = contact.AvatarURL;
+            if (contactFromDb.Phone != contact.Phone)
+                contactFromDb.Phone = contact.Phone;
+            if (contactFromDb.Email != contact.Email)
+                contactFromDb.Email = contact.Email;
+            if (contactFromDb.BirthDate != contact.BirthDate)
+                contactFromDb.BirthDate = contact.BirthDate;
+
+            return _dbContext.SaveChanges() > 0;
+        }
     }
 }
