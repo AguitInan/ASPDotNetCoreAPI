@@ -25,5 +25,18 @@ namespace ContactApiDTO.Repositories
 
             return null; // erreur lors de l'ajout
         }
+
+
+        // READ
+        public async Task<Contact?> Get(int id)
+        {
+            //return _db.Contacts.Find(id); // ne fonctionne que sur un DbSet<> (EFCore)
+            return await _db.Contacts.FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        public async Task<Contact?> Get(Expression<Func<Contact, bool>> predicate)
+        {
+            return await _db.Contacts.FirstOrDefaultAsync(predicate);
+        }
     }
 }
