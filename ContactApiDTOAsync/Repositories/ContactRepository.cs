@@ -78,5 +78,19 @@ namespace ContactApiDTO.Repositories
 
             return contactFromDb;
         }
+
+
+        // DELETE
+        public async Task<bool> Delete(int id)
+        {
+            var contactFromDb = await Get(id); // entitée récupérée donc TRAQUEE par l'ORM (EFCore)
+
+            if (contactFromDb == null)
+                return false; // erreur lors de la suppression => contact non trouvé
+
+            _db.Contacts.Remove(contactFromDb);
+
+            return await _db.SaveChangesAsync() > 0;
+        }
     }
 }
