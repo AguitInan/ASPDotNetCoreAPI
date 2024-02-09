@@ -38,5 +38,21 @@ namespace ContactApiDTO.Repositories
         {
             return await _db.Contacts.FirstOrDefaultAsync(predicate);
         }
+
+        public async Task<IEnumerable<Contact>> GetAll()
+        {
+            return _db.Contacts; 
+            // DbSet<> implémente l'interface IEnumerable
+            // en ne faisant pas le .ToList() tout de suite, on repousse l'exécution de la requête LINQ
+            // cela est plus otpimisé/pratique
+
+            //return await _db.Contacts.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Contact>> GetAll(Expression<Func<Contact, bool>> predicate)
+        {
+            return _db.Contacts.Where(predicate);
+            //return await _db.Contacts.Where(predicate).ToListAsync();
+        }
     }
 }
