@@ -54,5 +54,29 @@ namespace ContactApiDTO.Repositories
             return _db.Contacts.Where(predicate);
             //return await _db.Contacts.Where(predicate).ToListAsync();
         }
+
+
+        // UPDATE
+        public async Task<Contact?> Update(Contact contact)
+        {
+            var contactFromDb = await Get(contact.Id); // entitée récupérée donc TRAQUEE par l'ORM (EFCore)
+
+            if (contactFromDb == null)
+                return null; // erreur lors de la modification => contact non trouvé
+
+            if (contactFromDb.FirstName != contact.FirstName)
+                contactFromDb.FirstName = contact.FirstName;
+            if (contactFromDb.LastName != contact.LastName)
+                contactFromDb.LastName = contact.LastName;
+            if (contactFromDb.BirthDate != contact.BirthDate)
+                contactFromDb.BirthDate = contact.BirthDate;
+            if (contactFromDb.Gender != contact.Gender)
+                contactFromDb.Gender = contact.Gender;
+
+            if (await _db.SaveChangesAsync() == 0)
+                return null; // erreur lors de la modification
+
+            return contactFromDb;
+        }
     }
 }
