@@ -62,5 +62,28 @@ namespace ContactApiDTO.Controllers
                 Contact = contactDTO
             });
         }
+
+        //POST /contacts
+        [HttpPost]
+        [Authorize(Roles = Constants.RoleAdmin)]
+        public async Task<IActionResult> Post([FromBody] ContactDTO contactDTO)
+        {
+            var contact = _mapper.Map<Contact>(contactDTO)!;
+
+            var contactAdded = await _repository.Add(contact);
+
+            var contactAddedDTO = _mapper.Map<ContactDTO>(contactAdded)!;
+
+            if (contactAdded != null)
+                return CreatedAtAction(nameof(GetById), 
+                                       new { id = contactAddedDTO.Id },
+                                       new
+                                       {
+                                            Message = "Contact Added.",
+                                            Contact = contactAddedDTO
+                                       });
+
+            return BadRequest("Something went wrong...");
+        }
     }
 }
