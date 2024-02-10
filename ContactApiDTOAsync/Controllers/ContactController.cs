@@ -85,5 +85,32 @@ namespace ContactApiDTO.Controllers
 
             return BadRequest("Something went wrong...");
         }
+
+        //PUT /contacts/4
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put([FromRoute]int id, [FromBody] ContactDTO contactDTO)
+        {
+            var contactFromDb = await _repository.Get(id);
+
+            if (contactFromDb == null)
+                return NotFound("There is no Contact with this Id.");
+
+            contactDTO.Id = id; // nécessaire dans le cas où l'id n'est pas ou mal définit dan la requete
+
+            var contact = _mapper.Map<Contact>(contactDTO)!;
+
+            var contactUpdated = await _repository.Update(contact);
+
+            var contactUpdatedDTO = _mapper.Map<ContactDTO>(contactUpdated);
+
+            if (contactUpdated != null)
+                return Ok(new
+                {
+                    Message = "Contact Updated.",
+                    Contact = contactUpdatedDTO
+                });
+
+            return BadRequest("Something went wrong...");
+        }
     }
 }
