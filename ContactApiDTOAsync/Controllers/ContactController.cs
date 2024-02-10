@@ -112,5 +112,17 @@ namespace ContactApiDTO.Controllers
 
             return BadRequest("Something went wrong...");
         }
+
+
+        //DELETE /contacts/12
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (await _repository.Delete(id))
+                return Ok("Contect Deleted");
+
+            //return NotFound("Contact Not Found");
+            return BadRequest("Something went wrong...");
+        }
     }
 }
