@@ -41,5 +41,26 @@ namespace ContactApiDTO.Controllers
 
             return Ok(contactDTOs);
         }
+
+        //GET /contacts/5
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var contact = await _repository.Get(id);
+
+            if (contact == null)
+                return NotFound(new
+                {
+                    Message = "There is no Contact with this Id."
+                });
+
+            ContactDTO contactDTO = _mapper.Map<ContactDTO>(contact)!;
+
+            return Ok(new
+            {
+                Message = "Contact found.",
+                Contact = contactDTO
+            });
+        }
     }
 }
