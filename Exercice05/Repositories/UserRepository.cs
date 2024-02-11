@@ -54,5 +54,31 @@ namespace Exercice05.Repositories
             return _db.Users.Where(predicate);
             //return await _db.Contacts.Where(predicate).ToListAsync();
         }
+
+
+        // UPDATE
+        public async Task<User?> Update(User user)
+        {
+            var userFromDb = await Get(user.Id); // entitée récupérée donc TRAQUEE par l'ORM (EFCore)
+
+            if (userFromDb == null)
+                return null; // erreur lors de la modification => contact non trouvé
+
+            if (userFromDb.FirstName != user.FirstName)
+                userFromDb.FirstName = user.FirstName;
+            if (userFromDb.LastName != user.LastName)
+                userFromDb.LastName = user.LastName;
+            if (userFromDb.IsAdmin != user.IsAdmin)
+                userFromDb.IsAdmin = user.IsAdmin;
+            if (userFromDb.Email != user.Email)
+                userFromDb.Email = user.Email;
+            if (userFromDb.Password != user.Password)
+                userFromDb.Password = user.Password;
+
+            if (await _db.SaveChangesAsync() == 0)
+                return null; // erreur lors de la modification
+
+            return userFromDb;
+        }
     }
 }
