@@ -25,5 +25,18 @@ namespace Exercice05.Repositories
 
             return null; // erreur lors de l'ajout
         }
+
+
+        // READ
+        public async Task<User?> Get(int id)
+        {
+            //return _db.Contacts.Find(id); // ne fonctionne que sur un DbSet<> (EFCore)
+            return await _db.Users.FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        public async Task<User?> Get(Expression<Func<User, bool>> predicate)
+        {
+            return await _db.Users.FirstOrDefaultAsync(predicate);
+        }
     }
 }
