@@ -13,5 +13,17 @@ namespace Exercice05.Repositories
         {
             _db = db;
         }
+
+        // CREATE
+        public async Task<Ingredient?> Add(Ingredient ingredient)
+        {
+            var addEntry = await _db.Ingredients.AddAsync(ingredient); // retourne un EntityEntry<Contact> qui enveloppe le nouveau contact créé
+            await _db.SaveChangesAsync();
+
+            if (addEntry.Entity.Id > 0) // si l'entité est bien ajoutée l'id est > 0
+                return addEntry.Entity;
+
+            return null; // erreur lors de l'ajout
+        }
     }
 }
