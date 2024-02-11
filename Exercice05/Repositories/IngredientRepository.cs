@@ -54,5 +54,25 @@ namespace Exercice05.Repositories
             return _db.Ingredients.Where(predicate);
             //return await _db.Contacts.Where(predicate).ToListAsync();
         }
+
+
+        // UPDATE
+        public async Task<Ingredient?> Update(Ingredient ingredient)
+        {
+            var ingredientFromDb = await Get(ingredient.Id); // entitée récupérée donc TRAQUEE par l'ORM (EFCore)
+
+            if (ingredientFromDb == null)
+                return null; // erreur lors de la modification => contact non trouvé
+
+            if (ingredientFromDb.Name != ingredient.Name)
+                ingredientFromDb.Name = ingredient.Name;
+            if (ingredientFromDb.Description != ingredient.Description)
+                ingredientFromDb.Description = ingredient.Description;
+
+            if (await _db.SaveChangesAsync() == 0)
+                return null; // erreur lors de la modification
+
+            return ingredientFromDb;
+        }
     }
 }
