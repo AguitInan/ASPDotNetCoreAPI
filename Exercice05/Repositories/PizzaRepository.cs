@@ -54,5 +54,31 @@ namespace Exercice05.Repositories
             return _db.Pizzas.Where(predicate);
             //return await _db.Contacts.Where(predicate).ToListAsync();
         }
+
+
+        // UPDATE
+        public async Task<Pizza?> Update(Pizza pizza)
+        {
+            var pizzaFromDb = await Get(pizza.Id); // entitée récupérée donc TRAQUEE par l'ORM (EFCore)
+
+            if (pizzaFromDb == null)
+                return null; // erreur lors de la modification => contact non trouvé
+
+            if (pizzaFromDb.Name != pizza.Name)
+                pizzaFromDb.Name = pizza.Name;
+            if (pizzaFromDb.Description != pizza.Description)
+                pizzaFromDb.Description = pizza.Description;
+            if (pizzaFromDb.Price != pizza.Price)
+                pizzaFromDb.Price = pizza.Price;
+            if (pizzaFromDb.ImageUrl != pizza.ImageUrl)
+                pizzaFromDb.ImageUrl = pizza.ImageUrl;
+            if (pizzaFromDb.Variety != pizza.Variety)
+                pizzaFromDb.Variety = pizza.Variety;
+
+            if (await _db.SaveChangesAsync() == 0)
+                return null; // erreur lors de la modification
+
+            return pizzaFromDb;
+        }
     }
 }
