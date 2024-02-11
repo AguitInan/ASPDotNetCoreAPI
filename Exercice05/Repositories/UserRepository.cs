@@ -80,5 +80,19 @@ namespace Exercice05.Repositories
 
             return userFromDb;
         }
+
+
+        // DELETE
+        public async Task<bool> Delete(int id)
+        {
+            var userFromDb = await Get(id); // entitée récupérée donc TRAQUEE par l'ORM (EFCore)
+
+            if (userFromDb == null)
+                return false; // erreur lors de la suppression => contact non trouvé
+
+            _db.Users.Remove(userFromDb);
+
+            return await _db.SaveChangesAsync() > 0;
+        }
     }
 }
