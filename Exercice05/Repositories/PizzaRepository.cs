@@ -80,5 +80,19 @@ namespace Exercice05.Repositories
 
             return pizzaFromDb;
         }
+
+
+        // DELETE
+        public async Task<bool> Delete(int id)
+        {
+            var pizzaFromDb = await Get(id); // entitée récupérée donc TRAQUEE par l'ORM (EFCore)
+
+            if (pizzaFromDb == null)
+                return false; // erreur lors de la suppression => contact non trouvé
+
+            _db.Pizzas.Remove(pizzaFromDb);
+
+            return await _db.SaveChangesAsync() > 0;
+        }
     }
 }
