@@ -74,5 +74,19 @@ namespace Exercice05.Repositories
 
             return ingredientFromDb;
         }
+
+
+        // DELETE
+        public async Task<bool> Delete(int id)
+        {
+            var ingredientFromDb = await Get(id); // entitée récupérée donc TRAQUEE par l'ORM (EFCore)
+
+            if (ingredientFromDb == null)
+                return false; // erreur lors de la suppression => contact non trouvé
+
+            _db.Ingredients.Remove(ingredientFromDb);
+
+            return await _db.SaveChangesAsync() > 0;
+        }
     }
 }
