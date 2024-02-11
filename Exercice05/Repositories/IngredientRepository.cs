@@ -38,5 +38,21 @@ namespace Exercice05.Repositories
         {
             return await _db.Ingredients.FirstOrDefaultAsync(predicate);
         }
+
+        public async Task<IEnumerable<Ingredient>> GetAll()
+        {
+            return _db.Ingredients;
+            // DbSet<> implémente l'interface IEnumerable
+            // en ne faisant pas le .ToList() tout de suite, on repousse l'exécution de la requête LINQ
+            // cela est plus otpimisé/pratique
+
+            //return await _db.Contacts.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Ingredient>> GetAll(Expression<Func<Ingredient, bool>> predicate)
+        {
+            return _db.Ingredients.Where(predicate);
+            //return await _db.Contacts.Where(predicate).ToListAsync();
+        }
     }
 }
