@@ -62,5 +62,28 @@ namespace Exercice05.Controllers
                 Contact = pizzaDTO
             });
         }
+
+        //POST /contacts
+        [HttpPost]
+        [Authorize(Roles = Constants.RoleAdmin)]
+        public async Task<IActionResult> Post([FromBody] PizzaDTO pizzaDTO)
+        {
+            var pizza = _mapper.Map<Pizza>(pizzaDTO)!;
+
+            var pizzaAdded = await _repository.Add(pizza);
+
+            var pizzaAddedDTO = _mapper.Map<PizzaDTO>(pizzaAdded)!;
+
+            if (pizzaAdded != null)
+                return CreatedAtAction(nameof(GetById),
+                                       new { id = pizzaAddedDTO.Id },
+                                       new
+                                       {
+                                           Message = "Pizza Added.",
+                                           Contact = pizzaAddedDTO
+                                       });
+
+            return BadRequest("Something went wrong...");
+        }
     }
 }
