@@ -62,5 +62,28 @@ namespace Exercice05.Controllers
                 Contact = userDTO
             });
         }
+
+        //POST /contacts
+        [HttpPost]
+        [Authorize(Roles = Constants.RoleAdmin)]
+        public async Task<IActionResult> Post([FromBody] UserDTO userDTO)
+        {
+            var user = _mapper.Map<User>(userDTO)!;
+
+            var userAdded = await _repository.Add(user);
+
+            var userAddedDTO = _mapper.Map<UserDTO>(userAdded)!;
+
+            if (userAdded != null)
+                return CreatedAtAction(nameof(GetById), 
+                                       new { id = userAddedDTO.Id },
+                                       new
+                                       {
+                                            Message = "User Added.",
+                                            Contact = userAddedDTO
+                                       });
+
+            return BadRequest("Something went wrong...");
+        }
     }
 }
