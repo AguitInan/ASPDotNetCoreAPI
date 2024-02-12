@@ -62,5 +62,28 @@ namespace Exercice05.Controllers
                 Contact = ingredientDTO
             });
         }
+
+        //POST /contacts
+        [HttpPost]
+        [Authorize(Roles = Constants.RoleAdmin)]
+        public async Task<IActionResult> Post([FromBody] IngredientDTO ingredientDTO)
+        {
+            var ingredient = _mapper.Map<Ingredient>(ingredientDTO)!;
+
+            var ingredientAdded = await _repository.Add(ingredient);
+
+            var ingredientAddedDTO = _mapper.Map<IngredientDTO>(ingredientAdded)!;
+
+            if (ingredientAdded != null)
+                return CreatedAtAction(nameof(GetById),
+                                       new { id = ingredientAddedDTO.Id },
+                                       new
+                                       {
+                                           Message = "Ingredient Added.",
+                                           Contact = ingredientAddedDTO
+                                       });
+
+            return BadRequest("Something went wrong...");
+        }
     }
 }
