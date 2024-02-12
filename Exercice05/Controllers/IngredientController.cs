@@ -26,5 +26,20 @@ namespace Exercice05.Controllers
             _repository = repository;
             _mapper = mapper;
         }
+
+        //GET /contacts
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            //return Ok(_repository.GetAll());
+            IEnumerable<Ingredient> ingredients = await _repository.GetAll();
+
+            IEnumerable<IngredientDTO> ingredientDTOs = _mapper.Map<IEnumerable<IngredientDTO>>(ingredients)!;
+            //IEnumerable<ContactDTO> contactDTOs = _mapper.Map<IEnumerable<Contact>, IEnumerable<ContactDTO>>(contacts)!;
+
+            // possible d'ajouter des modification par rapport aux DTOs ici
+
+            return Ok(ingredientDTOs);
+        }
     }
 }
