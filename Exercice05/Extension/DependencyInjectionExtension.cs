@@ -57,9 +57,6 @@ namespace Exercice05.Extension
 
             }
 
-
-
-
          );
         }
 
@@ -72,14 +69,11 @@ namespace Exercice05.Extension
             builder.Services.AddScoped<IRepository<Pizza>, PizzaRepository>();
         }
 
-
         private static void AddDatabase(this WebApplicationBuilder builder)
         {
             var conn = builder.Configuration.GetConnectionString("Default");
             builder.Services.AddDbContext<AppDbContext>(option => option.UseSqlServer(conn));
         }
-
-
 
         public static void AddAuthentication(this WebApplicationBuilder builder)
         {
@@ -128,20 +122,6 @@ namespace Exercice05.Extension
 
 
             });
-
-
-
         }
-
-
-
-
-
-
-
-
-
-
-
     }
 }
