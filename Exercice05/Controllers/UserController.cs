@@ -112,5 +112,31 @@ namespace Exercice05.Controllers
 
             return BadRequest("Something went wrong...");
         }
+
+
+        //DELETE /contacts/12
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (await _repository.Delete(id))
+                return Ok("User Deleted");
+
+            //return NotFound("Contact Not Found");
+            return BadRequest("Something went wrong...");
+        }
+
+
+        ////GET /contacts
+        //[HttpGet("fullnames")]
+        //public async Task<IActionResult> GetAllFullNames()
+        //{
+        //    IEnumerable<Contact> contacts = await _repository.GetAll();
+
+        //    IEnumerable<ContactDTO> contactDTOs = _mapper.Map<IEnumerable<ContactDTO>>(contacts)!;
+
+        //    IEnumerable<ContactFullNameDTO> fullnames = _mapper.Map<IEnumerable<ContactFullNameDTO>>(contactDTOs)!;
+
+        //    return Ok(fullnames);
+        //}
     }
 }
