@@ -85,5 +85,32 @@ namespace Exercice05.Controllers
 
             return BadRequest("Something went wrong...");
         }
+
+        //PUT /contacts/4
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put([FromRoute] int id, [FromBody] PizzaDTO pizzaDTO)
+        {
+            var pizzaFromDb = await _repository.Get(id);
+
+            if (pizzaFromDb == null)
+                return NotFound("There is no Pizza with this Id.");
+
+            pizzaDTO.Id = id; // nécessaire dans le cas où l'id n'est pas ou mal définit dan la requete
+
+            var pizza = _mapper.Map<Pizza>(pizzaDTO)!;
+
+            var pizzaUpdated = await _repository.Update(pizza);
+
+            var pizzaUpdatedDTO = _mapper.Map<PizzaDTO>(pizzaUpdated);
+
+            if (pizzaUpdated != null)
+                return Ok(new
+                {
+                    Message = "Pizza Updated.",
+                    Contact = pizzaUpdatedDTO
+                });
+
+            return BadRequest("Something went wrong...");
+        }
     }
 }
