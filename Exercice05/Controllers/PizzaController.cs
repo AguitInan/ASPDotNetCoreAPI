@@ -41,5 +41,26 @@ namespace Exercice05.Controllers
 
             return Ok(pizzaDTOs);
         }
+
+        //GET /contacts/5
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var pizza = await _repository.Get(id);
+
+            if (pizza == null)
+                return NotFound(new
+                {
+                    Message = "There is no Pizza with this Id."
+                });
+
+            PizzaDTO pizzaDTO = _mapper.Map<PizzaDTO>(pizza)!;
+
+            return Ok(new
+            {
+                Message = "Pizza found.",
+                Contact = pizzaDTO
+            });
+        }
     }
 }
