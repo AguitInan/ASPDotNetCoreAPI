@@ -29,5 +29,22 @@ namespace Exercice05.Controllers
             _appSettings1 = appSettings.Value;
 
         }
+
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] User user)
+        {
+
+            if (await _appDbContext1.Users.FirstOrDefaultAsync(u => u.Email == user.Email) != null)
+                return BadRequest("Email exist");
+
+            user.Password = PasswordCrypter.Encrypt(user.Password, _appSettings1.SecretKey);
+
+            await _appDbContext1.AddAsync(user);
+
+            if (await _appDbContext1.SaveChangesAsync() > 0) return Ok("User crée");
+            return BadRequest("Probleme creation User");
+
+        }
     }
 }
