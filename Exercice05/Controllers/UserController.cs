@@ -42,5 +42,25 @@ namespace Exercice05.Controllers
             return Ok(userDTOs);
         }
 
+        //GET /contacts/5
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var user = await _repository.Get(id);
+
+            if (user == null)
+                return NotFound(new
+                {
+                    Message = "There is no User with this Id."
+                });
+
+            UserDTO userDTO = _mapper.Map<UserDTO>(user)!;
+
+            return Ok(new
+            {
+                Message = "User found.",
+                Contact = userDTO
+            });
+        }
     }
 }
