@@ -24,5 +24,43 @@ namespace Exercice05.Extension
             builder.AddAuthentication();
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
+
+        private static void addSwagger(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "ContactApi", Description = "On récupère des contacts" });
+                c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using Bearer scheme",
+                    Name = "Authorization",
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    Type = SecuritySchemeType.Http
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id= "Bearer"
+                        }
+                    },
+                    new String[]{}
+               }
+                });
+
+
+            }
+
+
+
+
+         );
+        }
     }
 }
