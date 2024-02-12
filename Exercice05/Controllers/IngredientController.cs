@@ -41,5 +41,26 @@ namespace Exercice05.Controllers
 
             return Ok(ingredientDTOs);
         }
+
+        //GET /contacts/5
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var ingredient = await _repository.Get(id);
+
+            if (ingredient == null)
+                return NotFound(new
+                {
+                    Message = "There is no Ingredient with this Id."
+                });
+
+            IngredientDTO ingredientDTO = _mapper.Map<IngredientDTO>(ingredient)!;
+
+            return Ok(new
+            {
+                Message = "Ingredient found.",
+                Contact = ingredientDTO
+            });
+        }
     }
 }
